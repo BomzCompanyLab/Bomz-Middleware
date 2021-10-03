@@ -1,0 +1,93 @@
+.root{
+	-fx-background-color : #FFFFFF;
+}
+
+#rootPn{
+	-fx-padding : 8;	
+}
+
+#listTv{
+	-fx-pref-width : 650;
+}
+
+#listTv .table-column{
+	-fx-alignment : center;
+}
+
+#rightContent{
+	-fx-pref-width : 500;
+	-fx-alignment : center;
+	-fx-spacing : 60;
+	-fx-alignment : TOP_CENTER;
+}
+
+.rightContentTitle{
+	-fx-font-size : 40;
+	-fx-font-weight : bold;
+}
+
+.align-left{
+	-fx-alignment : center-left;	
+}
+
+.align-right{
+	-fx-alignment : center-right;	
+}
+
+.align-center{
+	-fx-alignment : center;
+}
+
+#navigatorPn{
+	-fx-padding : 15;
+	-fx-hgap : 5;
+}
+
+.navigatorBt{
+	-fx-pref-width : 60;
+	-fx-pref-height : 40;
+}
+
+.navigatorSelectBt{
+	-fx-background-color : #8CFFA4;
+}
+
+#itemTotalLengthLb{
+	-fx-font-size : 16;
+	-fx-padding : 10;	
+}
+
+.backBt{
+	-fx-font-size : 20;
+	-fx-font-weight : bold;
+	-fx-pref-width : 120;
+	-fx-pref-height : 40;
+	-fx-text-fill : #000000;
+	-fx-border-color : #FFFFFF;
+	-fx-background-insets : 0;
+    -fx-background-radius : 0;
+    -fx-effect : none;
+}
+
+.backBt:pressed{
+	-fx-background-color : #FFFFFF;
+	-fx-text-fill : #04CB2E
+}
+
+Button{
+	-fx-pref-width : 120;
+	-fx-pref-height : 55;
+	-fx-alignment : center;
+	-fx-font-size : 12;
+	-fx-background-color : #FFFFFF;
+	-fx-border-color : #7F1619;
+	-fx-border-radius : 10;
+	
+	-fx-background-insets : 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius : 10;
+    -fx-effect : dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+}
+
+Button:pressed{
+	-fx-background-color : #AD7D80;
+}

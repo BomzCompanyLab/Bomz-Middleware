@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane ?>
+<?import javafx.scene.layout.FlowPane ?>
+<?import javafx.scene.layout.VBox ?>
+<?import javafx.scene.control.Label ?>
+<?import javafx.scene.control.Button ?>
+
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="kr.co.bomz.mw.ui.IndexController"
+	stylesheets="kr/co/bomz/mw/ui/Index.css">
+	
+	<center>
+		<VBox alignment="CENTER">
+			<FlowPane alignment="CENTER">
+				<Button fx:id="deviceBt" onAction="#handleDeviceListAction" />
+				<Button fx:id="logicalGroupBt" onAction="#handleLogicalGroupListAction" />
+				<Button fx:id="reporterBt" onAction="#handleReporterListAction" />
+			</FlowPane>
+			
+			<FlowPane alignment="CENTER">
+				<Button fx:id="deviceDriverBt" onAction="#handleDeviceDriverListAction" />
+				<Button fx:id="reporterDriverBt" onAction="#handleReporterDriverListAction" />
+				<Button fx:id="settingBt" onAction="#handleSettingAction" />
+			</FlowPane>
+		</VBox>
+	</center>
+	
+	<bottom>
+		<FlowPane prefHeight="60" alignment="BOTTOM_CENTER">
+			<Label text="Bomz Middleware Version 1.0" textFill="#919191" />
+		</FlowPane>
+	</bottom>
+	
+</BorderPane>
+

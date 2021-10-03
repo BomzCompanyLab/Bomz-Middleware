@@ -1,0 +1,52 @@
+.root{
+	-fx-background-color : #FFFFFF;
+	-fx-pref-width : 600;
+	-fx-padding : 20;
+}
+
+.topPane{
+	-fx-background-color : #000000;
+	-fx-pref-height : 40;
+	-fx-alignment : center;
+	-fx-padding : 0 15;
+}
+
+.topTitleLb{
+	-fx-text-fill : #FFFFFF;
+	-fx-font-size : 17;
+	-fx-pref-height : 40;
+}
+
+.clockLb{
+	-fx-text-fill : #FFFFFF;
+	-fx-font-size : 17;
+	-fx-pref-height : 40;
+}
+
+VBox{	
+	-fx-spacing : 50;
+}
+
+FlowPane{
+	-fx-hgap : 50;
+}
+
+Button{
+	-fx-pref-width : 130;
+	-fx-pref-height : 130;
+	-fx-alignment : center;
+	-fx-font-size : 12;
+	-fx-text-fill : #000000;
+	-fx-background-color : #FFFFFF;
+	-fx-border-color : #7F1619;
+	-fx-border-radius : 10;
+	
+	-fx-background-insets : 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius : 10;
+    -fx-effect : dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,2,3 );
+}
+
+Button:pressed{
+	-fx-background-color : #AD7D80;
+	-fx-text-fill : #FFFFFF;
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bomz.mw.db.DriverMapper">
+		
+	<select id="selectDeviceDriverAllList" resultType="driver">
+		SELECT		DRIVER_ID			AS driverId,
+						DRIVER_NAME	AS driverName
+		FROM		DEVICE_DRIVER_INFO
+	</select>
+	
+	<select id="selectReporterDriverAllList" resultType="driver">
+		SELECT		DRIVER_ID			AS driverId,
+						DRIVER_NAME	AS driverName
+		FROM		REPORTER_DRIVER_INFO
+	</select>
+		
+	<delete id="delDriver" parameterType="driver">
+		DELETE	FROM ${driverTableName}_DRIVER_INFO
+		WHERE	DRIVER_ID = #{driverId}
+	</delete>
+	
+	<select id="selectDriverListToTerm" parameterType="selectTerms" resultType="driver">
+		SET @TOTAL_COUNT = (SELECT COUNT(*) FROM ${driverTableName}_DRIVER_INFO);
+		SET @PAGE_START_NO = (getListStartPage( @TOTAL_COUNT, #{pageItemLength}, #{pageNo} ) );
+		SET @S_SQL = CONCAT(
+		'SELECT		A.*,
+							(SELECT COUNT(*) FROM ${driverTableName}_INFO WHERE DRIVER_ID = A.driverId)		AS driverMappingLength,
+							CAST(@PAGE_START_NO / ', #{pageItemLength}, ' AS INT) + 1 	AS pageNo,
+							@TOTAL_COUNT		AS itemTotalCount
+		FROM				(
+								SELECT			DRIVER_ID					AS driverId,
+													DRIVER_NAME			AS driverName,
+													DRIVER_FILE_NAME	AS driverFileName
+								FROM			${driverTableName}_DRIVER_INFO
+							) A
+		ORDER BY	A.driverId DESC
+		LIMIT ', @PAGE_START_NO, ', ', #{pageItemLength});
+		
+		PREPARE STMT FROM @S_SQL;
+		EXECUTE STMT;
+	</select>
+	
+	<select id="selectDriverInfo" parameterType="driver" resultType="driver">
+		SELECT		DRIVER_NAME			AS driverName,
+						DRIVER_FILE_NAME	AS driverFileName
+		FROM		${driverTableName}_DRIVER_INFO
+		WHERE	DRIVER_ID = #{driverId}
+	</select>
+	
+	<insert id="addDriver" parameterType="driver">
+		INSERT INTO ${driverTableName}_DRIVER_INFO
+			(DRIVER_NAME, DRIVER_FILE_NAME, DRIVER_JAR, REG_DATE)
+		VALUES
+			(TRIM(#{driverName}), TRIM(#{driverFileName}), #{driverJarFile}, NOW())
+		<selectKey keyProperty="driverId" resultType="Integer">
+		SELECT 	 LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="updDriver" parameterType="driver">
+		UPDATE	${driverTableName}_DRIVER_INFO
+		SET			DRIVER_NAME = TRIM(#{driverName}),
+						<if test="driverFileName != null and driverJarFile != null">
+						DRIVER_FILE_NAME = TRIM(#{driverFileName}),
+						DRIVER_JAR = #{driverJarFile},
+						</if>
+						UPD_DATE = NOW()
+		WHERE	DRIVER_ID = #{driverId}	
+	</update>
+	
+	<select id="selectDeviceDriverJar" parameterType="device" resultType="driver">
+		SELECT		DRIVER_JAR		AS driverJarFile
+		FROM		DEVICE_DRIVER_INFO
+		WHERE	DRIVER_ID = #{driverId}
+	</select>
+	
+	<select id="selectReporterDriverJar" parameterType="device" resultType="driver">
+		SELECT		DRIVER_JAR		AS driverJarFile
+		FROM		REPORTER_DRIVER_INFO
+		WHERE	DRIVER_ID = #{driverId}
+	</select>
+	
+	<select id="selectDeviceDriverInfo" parameterType="int" resultType="driver">
+		SELECT		DRIVER_ID					AS driverId, 
+						DRIVER_NAME			AS driverName, 
+						DRIVER_FILE_NAME	AS driverFileName
+		FROM		DEVICE_DRIVER_INFO
+		WHERE	DRIVER_ID = #{value}
+	</select>
+	
+	<select id="selectReporterDriverInfo" parameterType="int" resultType="driver">
+		SELECT		DRIVER_ID					AS driverId, 
+						DRIVER_NAME			AS driverName, 
+						DRIVER_FILE_NAME	AS driverFileName
+		FROM		REPORTER_DRIVER_INFO
+		WHERE	DRIVER_ID = #{value}
+	</select>
+	
+</mapper>
+

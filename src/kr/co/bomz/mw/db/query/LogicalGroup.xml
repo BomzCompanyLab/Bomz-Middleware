@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bomz.mw.db.LogicalGroupMapper">
+		
+	<insert id="addLogicalGroup" parameterType="logicalGroup">
+		INSERT INTO GROUP_INFO
+			(GROUP_NAME, REG_DATE)
+		VALUES
+			(TRIM(#{logicalGroupName}), NOW())
+		<selectKey keyProperty="logicalGroupId" resultType="Integer">
+		SELECT 	 LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="updLogicalGroup" parameterType="logicalGroup">
+		UPDATE	GROUP_INFO
+		SET			GROUP_NAME = TRIM(#{logicalGroupName}),
+						UPD_DATE = NOW()
+		WHERE	GROUP_ID = #{logicalGroupId}	
+	</update>
+	
+	<delete id="delLogicalGroup" parameterType="logicalGroup">
+		DELETE FROM GROUP_INFO
+		WHERE GROUP_ID = #{logicalGroupId}
+	</delete>
+	
+	<insert id="addLogicalGroupDeviceMap" parameterType="logicalGroup">
+		<if test="logicalGroupDeviceMapList != null">
+			INSERT INTO GROUP_MAP
+				(GROUP_ID, DEV_ID, DEV_ANT)
+			VALUES
+			<foreach item="lg" collection="logicalGroupDeviceMapList" separator=",">
+				(#{logicalGroupId}, #{lg.deviceId}, #{lg.antennaId})
+			</foreach>
+		</if>
+	</insert>
+	
+	<delete id="delLogicalGroupDeviceMap" parameterType="logicalGroup">
+		DELETE FROM GROUP_MAP
+		WHERE GROUP_ID = #{logicalGroupId}
+	</delete>
+	
+	<insert id="addLogicalGroupReporterMap" parameterType="logicalGroup">
+		<if test="logicalGroupReporterMapList != null">
+			INSERT INTO REPORTER_MAP
+				(REP_ID, GROUP_ID)
+			VALUES
+			<foreach item="re" collection="logicalGroupReporterMapList" separator=",">
+				(#{re.reporterId}, #{logicalGroupId})
+			</foreach>
+		</if>
+	</insert>
+	
+	<delete id="delLogicalGroupReporterMap" parameterType="logicalGroup">
+		DELETE FROM REPORTER_MAP
+		WHERE GROUP_ID = #{logicalGroupId}
+	</delete>
+	
+	<select id="selectAllLogicalGroupList" resultType="logicalGroup">
+		SELECT		GROUP_ID			AS logicalGroupId,
+						GROUP_NAME	AS logicalGroupName
+		FROM		GROUP_INFO	
+	</select>
+	
+	<select id="selectLogicalGroupInfo" parameterType="int" resultType="logicalGroup">
+		SELECT		GROUP_ID			AS logicalGroupId,
+						GROUP_NAME	AS logicalGroupName
+		FROM		GROUP_INFO	
+		WHERE	GROUP_ID = #{value}
+	</select>
+	
+	<select id="selectLogicalGroupDeviceMapList" parameterType="logicalGroup" resultType="logicalGroupDeviceMap">
+		SELECT		DEV_ID		AS deviceId,
+						DEV_ANT		AS antennaId
+		FROM		GROUP_MAP
+		WHERE	GROUP_ID = #{logicalGroupId}
+	</select>
+	
+	<select id="selectLogicalGroupReporterMapList" parameterType="logicalGroup" resultType="logicalGroupReporterMap">
+		SELECT		REP_ID			AS	reporterId
+		FROM		REPORTER_MAP
+		WHERE	GROUP_ID = #{logicalGroupId}
+	</select>
+	
+	<select id="selectLogicalGroupListToTerm" parameterType="selectTerms" resultType="logicalGroup">
+		SET @TOTAL_COUNT = (SELECT COUNT(*) FROM GROUP_INFO);
+		SET @PAGE_START_NO = (getListStartPage( @TOTAL_COUNT, #{pageItemLength}, #{pageNo} ) );
+		SET @S_SQL = CONCAT(
+		'SELECT		A.*,
+							(SELECT COUNT(*) FROM GROUP_MAP WHERE GROUP_ID = A.logicalGroupId)		AS deviceMappingLength,
+							(SELECT COUNT(*) FROM REPORTER_MAP WHERE GROUP_ID = A.logicalGroupId)	AS reporterMappingLength,
+							CAST(@PAGE_START_NO / ', #{pageItemLength}, ' AS INT) + 1 	AS pageNo,
+							@TOTAL_COUNT		AS itemTotalCount
+		FROM				(
+								SELECT			GROUP_ID			AS logicalGroupId,
+													GROUP_NAME	AS logicalGroupName
+								FROM			GROUP_INFO
+							) A
+		ORDER BY	A.logicalGroupId DESC
+		LIMIT ', @PAGE_START_NO, ', ', #{pageItemLength});
+		
+		PREPARE STMT FROM @S_SQL;
+		EXECUTE STMT;
+	</select>
+</mapper>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration  
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+
+<configuration>
+
+	<settings>
+		<setting name="logImpl" value="SLF4J"/>
+		<setting name="defaultExecutorType" value="REUSE"/>
+	</settings>
+	
+	<typeAliases>
+		<package name="kr.co.bomz.mw.db"/>
+	</typeAliases>
+	
+		
+	<environments default="bomz_mw">
+		<environment id="bomz_mw">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driverClassName}" />
+				<property name="url" value="${dbUrl}" />
+				<property name="username" value="${dbId}" />
+				<property name="password" value="${dbPw}" />
+				<property name="poolPingQuery" value="SELECT 1"/>
+				<property name="poolPingEnabled" value="true" /> 
+				<property name="poolMaximumActiveConnections" value="7" />
+				<property name="poolMaximumIdleConnections" value="6" />
+				<property name="poolMaximumCheckoutTime" value="30000" />
+			</dataSource>
+		</environment>
+	</environments>
+ 	
+	<mappers>
+		<mapper resource="kr/co/bomz/mw/db/query/Device.xml"/>
+		<mapper resource="kr/co/bomz/mw/db/query/LogicalGroup.xml"/>
+		<mapper resource="kr/co/bomz/mw/db/query/Reporter.xml"/>
+		<mapper resource="kr/co/bomz/mw/db/query/Driver.xml"/>
+		<mapper resource="kr/co/bomz/mw/db/query/Setting.xml"/>
+	</mappers>
+	
+</configuration>

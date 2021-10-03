@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bomz.mw.db.ReporterMapper">
+		
+		
+	<insert id="addReporter" parameterType="reporter">
+		INSERT INTO REPORTER_INFO
+			(REP_NAME, REP_IP, REP_PORT, REP_PARAM, REP_PERIOD, DRIVER_ID, REG_DATE)
+		VALUES
+			(TRIM(#{reporterName}), TRIM(#{reporterIp}), #{reporterPort}, TRIM(#{reporterParam}), #{timerRepeatTime}, #{driverId}, NOW())
+		<selectKey keyProperty="reporterId" resultType="Integer">
+		SELECT 	 LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="updReporter" parameterType="reporter">
+		UPDATE	REPORTER_INFO
+		SET			REP_NAME = TRIM(#{reporterName}),
+						REP_IP = TRIM(#{reporterIp}),
+						REP_PORT = #{reporterPort},
+						REP_PARAM = TRIM(#{reporterParam}),
+						REP_PERIOD = #{timerRepeatTime},
+						DRIVER_ID = #{driverId}, 
+						UPD_DATE = NOW()
+		WHERE	REP_ID = #{reporterId}	
+	</update>
+	
+	<delete id="delReporter" parameterType="reporter">
+		DELETE FROM REPORTER_INFO
+		WHERE REP_ID = #{reporterId}
+	</delete>
+	
+	<insert id="addReporterLogicalGroupMap" parameterType="reporter">
+		<if test="logicalGroupMapList != null">
+			INSERT INTO REPORTER_MAP
+				(REP_ID, GROUP_ID)
+			VALUES
+			<foreach item="lg" collection="logicalGroupMapList" separator=",">
+				(#{reporterId}, #{lg.logicalGroupId})
+			</foreach>
+		</if>
+	</insert>
+	
+	<delete id="delReporterLogicalGroupMap" parameterType="reporter">
+		DELETE FROM REPORTER_MAP
+		WHERE REP_ID = #{reporterId}
+	</delete>
+	
+	<update id="updateReporterConnectState" parameterType="reporter">
+		UPDATE	REPORTER_INFO
+		SET			REP_STATE = #{commState}
+		WHERE	REP_ID = #{reporterId}
+	</update>
+	
+	<select id="selectAllReporterList" resultType="reporter">
+		SELECT		REP_ID				AS	reporterId,
+						REP_NAME		AS	reporterName,
+						REP_IP				AS	reporterIp,
+						REP_PORT		AS	reporterPort,
+						REP_PARAM	AS	reporterParam,
+						REP_PERIOD	AS	timerRepeatTime,
+						DRIVER_ID		AS	driverId
+		FROM		REPORTER_INFO
+	</select>
+	
+	<select id="selectReporterInfo" parameterType="int" resultType="reporter">
+		SELECT		REP_ID				AS	reporterId,
+						REP_NAME		AS	reporterName,
+						REP_IP				AS	reporterIp,
+						REP_PORT		AS	reporterPort,
+						REP_PARAM	AS	reporterParam,
+						REP_PERIOD	AS	timerRepeatTime,
+						DRIVER_ID		AS	driverId
+		FROM		REPORTER_INFO
+		WHERE	REP_ID = #{value}
+	</select>
+	
+	
+	<select id="selectReporterListToTerm" parameterType="selectTerms" resultType="reporter">
+		SET @TOTAL_COUNT = (SELECT COUNT(*) FROM REPORTER_INFO);
+		SET @PAGE_START_NO = (getListStartPage( @TOTAL_COUNT, #{pageItemLength}, #{pageNo} ) );
+		SET @S_SQL = CONCAT(
+		'SELECT		A.REP_ID				AS reporterId,
+							A.REP_NAME		AS reporterName,
+							B.DRIVER_NAME	AS driverName,
+							A.REP_IP				AS reporterIp,
+							A.REP_PORT		AS reporterPort,
+							CAST(@PAGE_START_NO / ', #{pageItemLength}, ' AS INT) + 1 	AS pageNo,
+							@TOTAL_COUNT		AS itemTotalCount
+		FROM			REPORTER_INFO A
+		INNER JOIN	REPORTER_DRIVER_INFO B
+		ON				A.DRIVER_ID = B.DRIVER_ID
+		ORDER BY	REP_ID DESC
+		LIMIT ', @PAGE_START_NO, ', ', #{pageItemLength});
+		
+		PREPARE STMT FROM @S_SQL;
+		EXECUTE STMT;
+	</select>
+	
+	<select id="selectReporterLogicalGroupMap" parameterType="reporter" resultType="reporterLogicalGroupMap">
+		SELECT			A.GROUP_ID			AS logicalGroupId,
+							B.GROUP_NAME		AS logicalGroupName
+		FROM			REPORTER_MAP A
+		INNER JOIN	GROUP_INFO B
+		ON				A.GROUP_ID = B.GROUP_ID
+		WHERE		A.REP_ID = #{reporterId}
+	</select>
+	
+	<insert id="insertReporterWriteFailTagLog" parameterType="tagList">
+		INSERT INTO REPORTER_TAG_LOG
+			(DEV_ID, DEV_NAME, DEV_ANT, GROUP_ID, GROUP_NAME, REP_ID, REP_NAME, READ_TIME, TAG_ID, REG_DATE)
+		VALUES
+			<foreach item="tag" collection="tagList" separator="," >
+			(
+				#{tag.deviceId}, #{tag.deviceName}, #{tag.antenna}, #{tag.logicalGroupId}, #{tag.logicalGroupName},
+				#{reporterId}, #{reporterName}, #{tag.readTime}, #{tag.tagId}, NOW()
+			)
+			</foreach>
+	</insert>
+	
+	<select id="selectReporterWriteFailTagLog" parameterType="int" resultType="tag">
+		SELECT		LOG_ID				AS logId,
+						DEV_ID				AS deviceId, 
+						DEV_NAME			AS deviceName, 
+						DEV_ANT				AS antenna, 
+						GROUP_ID			AS logicalGroupId, 
+						GROUP_NAME	AS logicalGroupName, 
+						REP_ID					AS reporterId, 
+						REP_NAME			AS reporterName, 
+						READ_TIME			AS readTime, 
+						TAG_ID				AS tagId
+		FROM		REPORTER_TAG_LOG
+		WHERE	REP_ID = #{value}
+		LIMIT 		0, 100
+	</select>
+	
+	<delete id="removeReporterWriteFailTagLog" parameterType="String">
+		DELETE FROM REPORTER_TAG_LOG
+		WHERE LOG_ID IN (${value})
+	</delete>
+	
+	<delete id="clearReporterWriteFailTagLog" parameterType="int">
+		DELETE FROM REPORTER_TAG_LOG
+		WHERE REP_ID = #{value}
+	</delete>
+	
+</mapper>
+

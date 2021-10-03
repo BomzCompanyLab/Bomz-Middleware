@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bomz.mw.db.SettingMapper">
+	<select id="selectSettingInfoList" resultType="setting">
+		SELECT		PARAM_ID			AS paramId,
+						PARAM_VALUE	AS paramValue
+		FROM		SETTING_INFO
+	</select>
+	
+	<insert id="mergeSetting" parameterType="setting">
+		INSERT INTO SETTING_INFO 
+			(PARAM_ID, PARAM_VALUE) 
+		VALUES
+			(TRIM(#{paramId}), TRIM(#{paramValue}))
+		ON DUPLICATE KEY 
+		UPDATE 
+			PARAM_VALUE = TRIM(#{paramValue})
+	</insert>
+	
+</mapper>
+

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane ?>
+<?import javafx.scene.layout.FlowPane ?>
+<?import javafx.scene.layout.VBox ?>
+<?import javafx.scene.layout.HBox ?>
+
+<?import javafx.scene.control.TableView ?>
+<?import javafx.scene.control.TableColumn ?>
+<?import javafx.scene.control.cell.PropertyValueFactory ?>
+<?import javafx.scene.control.Label ?>
+<?import javafx.scene.control.Button ?>
+
+<?import javafx.scene.image.ImageView ?>
+<?import javafx.scene.image.Image ?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="kr.co.bomz.mw.ui.DeviceListController"
+	fx:id="rootPn"
+	stylesheets="kr/co/bomz/mw/ui/CmnList.css">
+	<top>
+		<Button text="&lt; BACK" styleClass="backBt" onAction="#handleBackAction" />
+	</top>
+	<center>
+		<BorderPane>
+			<top>
+				<FlowPane styleClass="align-right"><Label fx:id="itemTotalLengthLb" /></FlowPane>
+			</top>
+			<center>
+				<TableView fx:id="listTv">
+					<columns>
+						<TableColumn fx:id="nameTc">
+							<cellValueFactory><PropertyValueFactory property="deviceName" /></cellValueFactory>
+						</TableColumn>
+						
+						<TableColumn fx:id="commTc">
+							<cellValueFactory><PropertyValueFactory property="comm" /></cellValueFactory>
+						</TableColumn>
+						
+						<TableColumn fx:id="driverTc">
+							<cellValueFactory><PropertyValueFactory property="driverName" /></cellValueFactory>
+						</TableColumn>
+						
+						<TableColumn fx:id="commStateTc">
+							<cellValueFactory><PropertyValueFactory property="commStateValue" /></cellValueFactory>
+						</TableColumn>
+						
+					</columns>
+				</TableView>
+			</center>
+			<bottom>
+				<FlowPane fx:id="navigatorPn" styleClass="align-center" />
+			</bottom>
+		</BorderPane>
+	</center>
+	
+	<right>
+		<VBox fx:id="rightContent">
+			<Label fx:id="menuTitleLb" styleClass="rightContentTitle" />
+			<ImageView>
+				<image>
+					<Image url="@device_icon.png" />
+				</image>
+			</ImageView>
+			<Button fx:id="newBt" onAction="#handleNewItemAction" />
+		</VBox>
+	</right>
+</BorderPane>
+

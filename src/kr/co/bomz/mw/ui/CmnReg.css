@@ -1,0 +1,115 @@
+.rootPn{
+	-fx-background-color : #FFFFFF;
+	-fx-padding : 10;
+}
+
+.itemListBox{
+	-fx-spacing : 20;
+}
+
+.itemMenu{
+	-fx-pref-height : 25;
+}
+
+.tcpPortMenu{
+	-fx-max-width : 60;
+}
+
+.webServicePwMenu{
+	-fx-max-width : 190;
+}
+
+.titleLb{
+	-fx-pref-width : 150;
+	-fx-alignment : center-right;
+	-fx-padding : 0 10 0 0;
+}
+
+#menuTitleLb{
+	-fx-alignment : center-left;
+	-fx-font-size : 25;
+	-fx-font-weight : bold;
+}
+
+ComboBox{
+	-fx-pref-width : 160;
+}
+
+#nameTf{
+	-fx-max-width : 160;
+}
+
+.tcpPn{
+	-fx-hgap  : 5;
+}
+
+
+#tcpIpTf{
+	-fx-pref-width : 135;
+}
+
+.tcpColonLb{
+	-fx-pref-width : 5;
+	-fx-padding : 0;
+}
+
+#tcpPortTf{
+	-fx-pref-width : 60;
+}
+
+.itemWidth60{
+	-fx-max-width : 60;
+}
+
+.backgroundWhiteColor{
+	-fx-background-color : #FFFFFF;	
+}
+
+.titlePn{
+	-fx-alignment : center;
+	-fx-padding : 0 0 20 0;
+}
+
+.actionButtonPn{
+	-fx-alignment : center;
+	-fx-hgap : 15;	
+	-fx-padding : 20 0 0 0;
+}
+
+.actionBt{
+	-fx-pref-width : 150;
+	-fx-pref-height : 50;
+	-fx-alignment : center;
+	-fx-font-size : 15;
+	-fx-font-weight : bold;
+	-fx-background-color : #FFFFFF;
+	-fx-border-color : #5d5d5d;
+	-fx-border-radius : 30;
+	
+	-fx-background-insets : 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius : 30;
+    -fx-effect : dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+}
+
+.actionBt:pressed{
+	-fx-background-color : #ffe2e3;
+}
+
+.transferBox{
+	-fx-min-height : 180;
+	-fx-max-height : 180;	
+}
+
+.fileChooserBt{
+	-fx-background-color : #FFFFFF;
+	-fx-border-color : #5d5d5d;
+	-fx-border-radius : 2;
+	
+	-fx-background-insets : 0;
+    -fx-background-radius : 2;
+    -fx-effect : none;
+}
+
+.fileChooserBt:pressed{
+	-fx-background-color : #ffe2e3;
+}

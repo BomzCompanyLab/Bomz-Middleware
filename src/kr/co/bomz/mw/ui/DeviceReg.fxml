@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Integer ?>
+
+<?import javafx.scene.layout.BorderPane ?>
+<?import javafx.scene.layout.FlowPane ?>
+<?import javafx.scene.layout.VBox ?>
+
+<?import javafx.collections.FXCollections ?>
+
+<?import javafx.scene.control.ScrollPane ?>
+<?import javafx.scene.control.Label ?>
+<?import javafx.scene.control.Button ?>
+<?import javafx.scene.control.TextField ?>
+<?import javafx.scene.control.ComboBox ?>
+
+<?import kr.co.bomz.mw.ui.ComboBoxIntegerItem ?>
+<?import kr.co.bomz.cmn.ui.transfer.TransferSelect ?>
+<?import kr.co.bomz.cmn.ui.button.BomzToggleButton ?>
+<?import kr.co.bomz.cmn.ui.field.BomzTextField ?>
+<?import kr.co.bomz.cmn.ui.field.KeyInputType ?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="kr.co.bomz.mw.ui.DeviceRegController"
+	stylesheets="kr/co/bomz/mw/ui/CmnReg.css"
+	styleClass="rootPn">
+	
+	<top>
+		<FlowPane styleClass="titlePn">
+			<Label fx:id="menuTitleLb" />
+		</FlowPane>
+	</top>
+	
+	<center>
+		<ScrollPane fx:id="centerScrollPn" styleClass="backgroundWhiteColor" fitToWidth="true">
+			<BorderPane styleClass="backgroundWhiteColor">
+				<left>
+					<VBox styleClass="itemListBox">
+						<Label fx:id="nameLb" styleClass="titleLb, itemMenu" />
+						<Label text="Driver" styleClass="titleLb, itemMenu"/>
+						<Label fx:id="commLb" styleClass="titleLb, itemMenu" />
+						<Label fx:id="tcpModeLb" styleClass="titleLb, itemMenu" />
+						<Label text="TCP IP:Port" styleClass="titleLb, itemMenu" />
+						<Label text="Serial Port" styleClass="titleLb, itemMenu" />
+						<Label text="BaudRate" styleClass="titleLb, itemMenu" />
+						<Label text="FlowControl" styleClass="titleLb, itemMenu" />
+						<Label text="DataBits" styleClass="titleLb, itemMenu" />
+						<Label text="StopBits" styleClass="titleLb, itemMenu" />
+						<Label text="Parity" styleClass="titleLb, itemMenu" />
+						<Label fx:id="gpAnt1Lb" styleClass="titleLb, itemMenu, transferBox" />
+						<Label fx:id="gpAnt2Lb" styleClass="titleLb, itemMenu, transferBox" />
+						<Label fx:id="gpAnt3Lb" styleClass="titleLb, itemMenu, transferBox" />
+						<Label fx:id="gpAnt4Lb" styleClass="titleLb, itemMenu, transferBox" />
+					</VBox>
+				</left>
+				
+				<center>
+					<VBox styleClass="itemListBox">
+						<BomzTextField fx:id="nameTf" styleClass="itemMenu">
+							<maxTextLength>
+								<Integer fx:value="20" />
+							</maxTextLength>
+							<keyInputType>
+								<KeyInputType fx:value="ALL" />
+							</keyInputType>
+						</BomzTextField>
+						<ComboBox fx:id="deviceDriverCb" styleClass="itemMenu" />
+						<BomzToggleButton fx:id="deviceCommTb" styleClass="itemMenu" />
+						<BomzToggleButton fx:id="tcpModeTb" styleClass="itemMenu" />
+						<FlowPane styleClass="itemMenu, tcpPn">
+							<BomzTextField fx:id="tcpIpTf" styleClass="itemMenu">
+								<maxTextLength>
+									<Integer fx:value="23" />
+								</maxTextLength>
+								<keyInputType>
+									<KeyInputType fx:value="ONLY_NUMBER_DOT" />
+								</keyInputType>
+							</BomzTextField>
+							<Label text=":" styleClass="tcpColonLb, itemMenu" />
+							<BomzTextField fx:id="tcpPortTf" styleClass="itemMenu" >
+								<maxTextLength>
+									<Integer fx:value="5" />
+								</maxTextLength>
+								<keyInputType>
+									<KeyInputType fx:value="ONLY_NUMBER" />
+								</keyInputType>
+							</BomzTextField>
+						</FlowPane>
+						
+						<ComboBox fx:id="serialPortCb" styleClass="itemMenu">
+							<items>
+								<FXCollections fx:factory="observableArrayList">
+									<ComboBoxIntegerItem value="1" name="COM1" /><ComboBoxIntegerItem value="2" name="COM2" />
+									<ComboBoxIntegerItem value="3" name="COM3" /><ComboBoxIntegerItem value="4" name="COM4" />
+									<ComboBoxIntegerItem value="5" name="COM5" /><ComboBoxIntegerItem value="6" name="COM6" />
+									<ComboBoxIntegerItem value="7" name="COM7" /><ComboBoxIntegerItem value="8" name="COM8" />
+									<ComboBoxIntegerItem value="9" name="COM9" /><ComboBoxIntegerItem value="10" name="COM10" />
+									
+									<ComboBoxIntegerItem value="11" name="COM11" /><ComboBoxIntegerItem value="12" name="COM12" />
+									<ComboBoxIntegerItem value="13" name="COM13" /><ComboBoxIntegerItem value="14" name="COM14" />
+									<ComboBoxIntegerItem value="15" name="COM15" /><ComboBoxIntegerItem value="16" name="COM16" />
+									<ComboBoxIntegerItem value="17" name="COM17" /><ComboBoxIntegerItem value="18" name="COM18" />
+									<ComboBoxIntegerItem value="19" name="COM19" /><ComboBoxIntegerItem value="20" name="COM20" />
+									
+									<ComboBoxIntegerItem value="21" name="COM21" /><ComboBoxIntegerItem value="22" name="COM22" />
+									<ComboBoxIntegerItem value="23" name="COM23" /><ComboBoxIntegerItem value="24" name="COM24" />
+									<ComboBoxIntegerItem value="25" name="COM25" />
+								</FXCollections>
+							</items>
+						</ComboBox>
+						
+						<ComboBox fx:id="serialBaudRateCb" styleClass="itemMenu">
+							<items>
+								<FXCollections fx:factory="observableArrayList">
+								    <Integer fx:value="110"/><Integer fx:value="300"/><Integer fx:value="1200"/>
+								    <Integer fx:value="2400"/><Integer fx:value="4800"/><Integer fx:value="9600"/>
+								    <Integer fx:value="19200"/><Integer fx:value="38400"/><Integer fx:value="57600"/>
+								    <Integer fx:value="115200"/><Integer fx:value="230400"/><Integer fx:value="460800"/>
+								    <Integer fx:value="921600"/>
+								</FXCollections>
+							</items>
+						</ComboBox>
+						
+						<ComboBox fx:id="serialFlowControlCb" styleClass="itemMenu">
+							<items>
+								<FXCollections fx:factory="observableArrayList">
+								    <ComboBoxIntegerItem value="0" name="NONE" />
+								    <ComboBoxIntegerItem value="1" name="RTS/CTS IN" />
+								    <ComboBoxIntegerItem value="2" name="RTS/CTS OUT" />
+								    <ComboBoxIntegerItem value="4" name="XON/XOFF IN" />
+								    <ComboBoxIntegerItem value="8" name="XON/XOFF OUT" />
+								</FXCollections>
+							</items>
+						</ComboBox>
+						
+						<ComboBox fx:id="serialDataBitsCb" styleClass="itemMenu">
+							<items>
+								<FXCollections fx:factory="observableArrayList">
+								    <ComboBoxIntegerItem value="5" name="DATABITS 5" />
+								    <ComboBoxIntegerItem value="6" name="DATABITS 6" />
+								    <ComboBoxIntegerItem value="7" name="DATABITS 7" />
+								    <ComboBoxIntegerItem value="8" name="DATABITS 8" />
+								</FXCollections>
+							</items>
+						</ComboBox>
+						
+						<ComboBox fx:id="serialStopBitsCb" styleClass="itemMenu">
+							<items>
+								<FXCollections fx:factory="observableArrayList">
+								    <ComboBoxIntegerItem value="1" name="STOPBITS 1" />
+								    <ComboBoxIntegerItem value="3" name="STOPBITS 1.5" />
+								    <ComboBoxIntegerItem value="2" name="STOPBITS 2" />
+								</FXCollections>
+							</items>
+						</ComboBox>
+						
+						<ComboBox fx:id="serialParityCb" styleClass="itemMenu">
+							<items>
+								<FXCollections fx:factory="observableArrayList">
+								    <ComboBoxIntegerItem value="0" name="PARITY NONE" />
+								    <ComboBoxIntegerItem value="1" name="PARITY ODD" />
+								    <ComboBoxIntegerItem value="2" name="PARITY EVEN" />
+								    <ComboBoxIntegerItem value="3" name="PARITY MARK" />
+								    <ComboBoxIntegerItem value="4" name="PARITY SPACE" />
+								</FXCollections>
+							</items>
+						</ComboBox>
+						
+						<TransferSelect fx:id="logicalGroupTransferSelect1" styleClass="transferBox" />
+						<TransferSelect fx:id="logicalGroupTransferSelect2" styleClass="transferBox" />
+						<TransferSelect fx:id="logicalGroupTransferSelect3" styleClass="transferBox" />
+						<TransferSelect fx:id="logicalGroupTransferSelect4" styleClass="transferBox" />
+					</VBox>
+				</center>
+			</BorderPane>
+		</ScrollPane>
+	</center>
+	
+	<bottom>
+		<FlowPane styleClass="actionButtonPn">
+			<Button fx:id="submitBt" styleClass="actionBt" onAction="#handleSubmitAction" />
+			<Button fx:id="cancelBt"  styleClass="actionBt" onAction="#handleCancelAction" />
+		</FlowPane>
+	</bottom>
+	
+</BorderPane>
+

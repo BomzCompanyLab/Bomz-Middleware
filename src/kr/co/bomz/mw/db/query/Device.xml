@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.bomz.mw.db.DeviceMapper">
+		
+	<insert id="addDevice" parameterType="device">
+		INSERT INTO DEVICE_INFO
+			(DEV_NAME, DRIVER_ID, DEV_TYPE, TCP_MODE, DEV_IP, DEV_PORT, DEV_BR, DEV_FC, DEV_DT, DEV_SB, DEV_PR, REG_DATE)
+		VALUES
+			(TRIM(#{deviceName}), #{driverId}, #{commType}, #{tcpMode}, TRIM(#{tcpIp}), #{port}, #{baudRate}, #{flowControl}, #{dataBits}, #{stopBits}, #{parity}, NOW())
+		<selectKey keyProperty="deviceId" resultType="Integer">
+		SELECT 	 LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="updDevice" parameterType="device">
+		UPDATE	DEVICE_INFO
+		SET			DEV_NAME = TRIM(#{deviceName}),
+						DRIVER_ID = #{driverId},
+						DEV_TYPE = #{commType},
+						TCP_MODE = #{tcpMode},
+						DEV_IP = TRIM(#{tcpIp}),
+						DEV_PORT = #{port},
+						DEV_BR = #{baudRate}, 
+						DEV_FC = #{flowControl}, 
+						DEV_DT = #{dataBits}, 
+						DEV_SB = #{stopBits}, 
+						DEV_PR = #{parity},
+						UPD_DATE = NOW()
+		WHERE	DEV_ID = #{deviceId}	
+	</update>
+	
+	<delete id="delDevice" parameterType="device">
+		DELETE FROM DEVICE_INFO
+		WHERE DEV_ID = #{deviceId}
+	</delete>
+	
+	<insert id="addDeviceLogicalGroupMap" parameterType="device">
+		<if test="logicalGroupMapList != null">
+			INSERT INTO GROUP_MAP
+				(GROUP_ID, DEV_ID, DEV_ANT)
+			VALUES
+			<foreach item="lg" collection="logicalGroupMapList" separator=",">
+				(#{lg.logicalGroupId}, #{deviceId}, #{lg.antennaId})
+			</foreach>
+		</if>
+	</insert>
+	
+	<delete id="delDeviceLogicalGroupMap" parameterType="device">
+		DELETE FROM GROUP_MAP
+		WHERE DEV_ID = #{deviceId}
+	</delete>
+	
+	<update id="updateDeviceConnectState" parameterType="device">
+		UPDATE	DEVICE_INFO
+		SET			DEV_STATE = #{commState}
+		WHERE	DEV_ID = #{deviceId}
+	</update>
+	
+	<select id="selectAllDeviceList" resultType="device">
+		SELECT		DEV_ID			AS deviceId,
+						DEV_NAME		AS deviceName,
+						DRIVER_ID		AS driverId,
+						DEV_TYPE		AS commType,
+						TCP_MODE		AS tcpMode,
+						DEV_IP				AS tcpIp,
+						DEV_PORT		AS port,
+						DEV_BR			AS baudRate,
+						DEV_FC			AS flowControl,
+						DEV_DT			AS dataBits,
+						DEV_SB			AS stopBits,
+						DEV_PR			AS parity
+		FROM		DEVICE_INFO
+	</select>
+	
+	<select id="selectDeviceListToTerm" parameterType="selectTerms" resultType="device">
+		SET @TOTAL_COUNT = (SELECT COUNT(*) FROM DEVICE_INFO);
+		SET @PAGE_START_NO = (getListStartPage( @TOTAL_COUNT, #{pageItemLength}, #{pageNo} ) );
+		SET @S_SQL = CONCAT(
+		'SELECT		A.DEV_ID				AS deviceId,
+							A.DEV_NAME		AS deviceName,
+							B.DRIVER_NAME	AS driverName,
+							A.DEV_TYPE		AS commType,
+							A.TCP_MODE		AS tcpMode,
+							A.DEV_IP				AS tcpIp,
+							A.DEV_PORT		AS port,
+							A.DEV_BR			AS baudRate,
+							A.DEV_FC			AS flowControl,
+							A.DEV_DT			AS dataBits,
+							A.DEV_SB			AS stopBits,
+							A.DEV_PR			AS parity,
+							A.DEV_STATE		AS commState,
+							CAST(@PAGE_START_NO / ', #{pageItemLength}, ' AS INT) + 1 	AS pageNo,
+							@TOTAL_COUNT		AS itemTotalCount
+		FROM			DEVICE_INFO A
+		INNER JOIN	DEVICE_DRIVER_INFO B
+		ON				A.DRIVER_ID = B.DRIVER_ID
+		ORDER BY	DEV_ID DESC
+		LIMIT ', @PAGE_START_NO, ', ', #{pageItemLength});
+		
+		PREPARE STMT FROM @S_SQL;
+		EXECUTE STMT;
+	</select>
+	
+	<select id="selectDeviceInfo" parameterType="int" resultType="device">
+		SELECT			DEV_ID			AS deviceId,
+							DEV_NAME		AS deviceName,
+							DRIVER_ID		AS driverId,
+							DEV_TYPE		AS commType,
+							TCP_MODE		AS tcpMode,
+							DEV_IP				AS tcpIp,
+							DEV_PORT		AS port,
+							DEV_BR			AS baudRate,
+							DEV_FC			AS flowControl,
+							DEV_DT			AS dataBits,
+							DEV_SB			AS stopBits,
+							DEV_PR			AS parity
+		FROM			DEVICE_INFO
+		WHERE		DEV_ID = #{value}
+	</select>
+	
+	<select id="selectDeviceLogicalGroupMap" parameterType="device" resultType="deviceLogicalGroupMap">
+		SELECT		DEV_ANT		AS antennaId,
+						GROUP_ID	AS logicalGroupId
+		FROM		GROUP_MAP
+		WHERE	DEV_ID = #{deviceId}
+	</select>
+	
+</mapper>
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Integer ?>
+
+<?import javafx.scene.layout.BorderPane ?>
+<?import javafx.scene.layout.FlowPane ?>
+<?import javafx.scene.layout.VBox ?>
+
+<?import javafx.scene.control.ScrollPane ?>
+<?import javafx.scene.control.Label ?>
+<?import javafx.scene.control.Button ?>
+<?import javafx.scene.control.TextField ?>
+<?import javafx.stage.FileChooser ?>
+
+<?import kr.co.bomz.cmn.ui.field.BomzTextField ?>
+<?import kr.co.bomz.cmn.ui.field.KeyInputType ?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="kr.co.bomz.mw.ui.DriverRegController"
+	stylesheets="kr/co/bomz/mw/ui/CmnReg.css"
+	styleClass="rootPn">
+	
+	<top>
+		<FlowPane styleClass="titlePn">
+			<Label fx:id="menuTitleLb" />
+		</FlowPane>
+	</top>
+	
+	<center>
+		<ScrollPane fx:id="centerScrollPn" styleClass="backgroundWhiteColor" fitToWidth="true">
+			<BorderPane styleClass="backgroundWhiteColor">
+				<left>
+					<VBox styleClass="itemListBox">
+						<Label fx:id="nameLb" styleClass="titleLb, itemMenu" />
+						<Label text="Driver" styleClass="titleLb, itemMenu"/>
+					</VBox>
+				</left>
+				
+				<center>
+					<VBox styleClass="itemListBox">
+						<BomzTextField fx:id="nameTf" styleClass="itemMenu">
+							<maxTextLength>
+								<Integer fx:value="20" />
+							</maxTextLength>
+							<keyInputType>
+								<KeyInputType fx:value="ALL" />
+							</keyInputType>
+						</BomzTextField>
+						<FlowPane>
+							<Button text="File" styleClass="itemMenu, fileChooserBt" onAction="#handleDriverFileChooserAction" />
+							<Label fx:id="driverFileNameLb" />
+						</FlowPane>
+					</VBox>
+				</center>
+			</BorderPane>
+		</ScrollPane>
+	</center>
+	
+	<bottom>
+		<FlowPane styleClass="actionButtonPn">
+			<Button fx:id="submitBt" styleClass="actionBt" onAction="#handleSubmitAction" />
+			<Button fx:id="cancelBt"  styleClass="actionBt" onAction="#handleCancelAction" />
+		</FlowPane>
+	</bottom>
+	
+</BorderPane>
+

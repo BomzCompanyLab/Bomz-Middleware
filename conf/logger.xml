@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<loggers observe="on">
+
+	<logger name="BomzMw" type="file" level="info" >
+		<param name="dir">./log/bomz.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	
+	<logger name="Device" type="file" level="info" >
+		<param name="dir">./log/device.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	
+	<logger name="Reporter" type="file" level="info" >
+		<param name="dir">./log/reporter.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	
+	<logger name="Controller" type="file" level="info" >
+		<param name="dir">./log/controller.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	
+	<logger name="Database" type="file" level="info" >
+		<param name="dir">./log/database.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	
+	<logger name="WebService" type="file" level="info" >
+		<param name="dir">./log/webService.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	
+	<logger name="WriteFail" type="file" level="debug">
+		<param name="dir">./log/reporterWriteFail.log</param>
+		<param name="size">30</param>
+		<param name="period">DAY</param>
+	</logger>
+	 
+</loggers>
